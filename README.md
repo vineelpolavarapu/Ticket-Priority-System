@@ -39,7 +39,7 @@ Client (Postman / Frontend) (*I use Postman*) → Flask AP → Priority Engine :
 
 ## Tech Stack
 
-**Language** Python
+**Language:** Python
 
 **Framework**: Flask
 
