@@ -35,16 +35,7 @@ Returns priority instantly to the requester
 
 ## Architecture
 
-Client (Postman / Frontend) (*I use Postman*)
-        |
-        v
-     Flask API
-        |
-        v
- Priority Engine  →  Business Rules
-        |
-        v
- MySQL Repository → Persistent Storage
+Client (Postman / Frontend) (*I use Postman*) → Flask AP → Priority Engine : Business Rules → MySQL Repository → Persistent Storage
 
 ## Tech Stack
 
