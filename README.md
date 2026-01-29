@@ -34,14 +34,11 @@ Persists ticket data in MySQL
 Returns priority instantly to the requester
 
 ## Architecture
-
 Client (Postman / Frontend) (*I use Postman*) → Flask API → Priority Engine : Business Rules →  MySQL Repository → Persistent Storage
-
-
 
 ## Tech Stack
 
-**Language** Python
+**Language:** Python
 
 **Framework**: Flask
 
