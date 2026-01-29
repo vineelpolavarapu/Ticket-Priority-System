@@ -2,9 +2,10 @@ from flask import Flask , request , jsonify
 from priority_engine import PriorityEngine
 from ticket import Ticket
 from repository.ticket_priority import TicketRepository
+from flask_cors import CORS
 
 app=Flask(__name__)
-
+CORS(app)
 engine=PriorityEngine()
 repo=TicketRepository()
 
