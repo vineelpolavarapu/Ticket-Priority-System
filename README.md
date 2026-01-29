@@ -1,5 +1,6 @@
 # Customer Service Ticket Priority System
 
+
 ## Ticket Priority System
 
 A backend system that automatically assigns priority levels to customer support tickets based on business rules such as issue severity, customer type, impact, and time.
@@ -34,26 +35,41 @@ Persists ticket data in MySQL
 Returns priority instantly to the requester
 
 ## Architecture
-Client (Postman / Frontend) (*I use Postman*) → Flask API → Priority Engine : Business Rules →  MySQL Repository → Persistent Storage
+
+Client (Postman / Frontend) (*I use Postman*)  
+                |
+                v
+            Flask API
+                |
+                v 
+Priority Engine →  Business Rules 
+                |
+                v
+ MySQL Repository → Persistent Storage
+
+
 
 ## Tech Stack
 
 **Language:** Python
 
-**Framework**: Flask
+**Framework:** Flask
 
-**Database**: MySQL
+**Database:** MySQL
 
-**API Testing**: Postman
+**API Testing:** Postman
 
-**Version Control**: Git & GitHub
+**Version Control:** Git & GitHub
 
 ## Priority Rules (*Example*)
 
 Factor	Description
 **Issue Type**	critical / major / minor
+
 **Customer Type**	free / paid / enterprise
+
 **Impact**	number of users affected
+
 **Time**	ticket age
 
 Final priority is calculated using weighted scoring.
