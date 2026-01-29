@@ -2,6 +2,13 @@ import mysql.connector
 
 class TicketRepository():
 
+    def get_all(self):
+        query="SELECT * FROM tickets ORDER BY created_at DESC"
+
+        self.cursor.execute(query)
+        return self.cursor.fetchall()
+
+
     def __init__(self):
         self.conn=mysql.connector.connect(
             host="127.0.0.1",

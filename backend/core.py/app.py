@@ -8,6 +8,13 @@ app=Flask(__name__)
 engine=PriorityEngine()
 repo=TicketRepository()
 
+@app.route("/tickets",methods=["GET"])
+def get_tickets():
+
+    tickets=repo.get_all()
+
+    return jsonify(tickets),200
+
 
 @app.route("/tickets",methods=["POST"])
 
