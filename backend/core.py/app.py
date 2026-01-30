@@ -12,9 +12,18 @@ repo=TicketRepository()
 @app.route("/tickets",methods=["GET"])
 def get_tickets():
 
-    tickets=repo.get_all()
+    page=int(request.args.get("page",1))
+    limit=int(request.args.get("limit",10))
 
-    return jsonify(tickets),200
+    tickets=repo.get_paginated(page,limit)
+    total=repo.get_count()
+
+    return jsonify({
+        "tickets":tickets,
+        "total":total,
+        "page":page,
+        "limit":limit
+    }),200
 
 
 @app.route("/tickets",methods=["POST"])

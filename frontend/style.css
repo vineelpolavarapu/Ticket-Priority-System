@@ -162,3 +162,34 @@ button:active {
         padding: 25px 20px;
     }
 }
+
+.pagination {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+    align-items: center;
+}
+
+.pagination button {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    background: #3a3a4f;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s ease, opacity 0.2s ease;
+}
+
+.pagination button:hover:not(:disabled) {
+    background: #00d8ff;
+}
+
+.pagination button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+#pageInfo {
+    font-weight: 500;
+    color: #cfd1d8;
+}

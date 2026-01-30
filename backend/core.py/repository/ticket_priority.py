@@ -21,6 +21,23 @@ class TicketRepository():
         )
         self.cursor=self.conn.cursor(dictionary=True)
     
+    def get_paginated(self,limit,offset):
+        query="""SELECT * FROM tickets
+
+        ORDER BY created_at DESC
+
+        LIMIT %s OFFSET %s
+
+        """
+        self.cursor.execute(query,(limit,offset))
+        return self.cursor.fetchall()
+    
+    def get_count(self):
+
+        self.cursor.execute("SELECT COUNT (*) AS total FROM tickets")
+        return self.cursor.fetchone()["total"]
+    
+    
     def save(self,ticket):
         query="""
 

@@ -20,9 +20,10 @@ document.addEventListener("DOMContentLoaded", function () {
             body: JSON.stringify(data)
         });
 
+
+
         const result = await response.json();
 
-        // ✅ SAFE: backend untouched
         resultText.innerText =
         `Priority: ${result.level}
 Score: ${result.score}`;
@@ -35,3 +36,48 @@ Score: ${result.score}`;
     });
 
 });
+
+let page = 1;
+const limit = 10;
+let total = 0;
+
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const pageInfo = document.getElementById("pageInfo");
+const ticketsContainer = document.getElementById("ticketsContainer");
+
+async function loadTickets() {
+    const response = await fetch(`/tickets?page=${page}&limit=${limit}`);
+    const data = await response.json();
+
+
+    total = data.total;
+
+    ticketsContainer.innerHTML = "";
+    data.tickets.forEach(ticket => {
+        const div = document.createElement("div");
+        div.innerText = `Priority: ${ticket.level} | Score: ${ticket.score}`;
+        ticketsContainer.appendChild(div);
+    });
+
+    pageInfo.innerText = `Page ${page}`;
+
+    prevBtn.disabled = page === 1;
+    nextBtn.disabled = (page * limit) >= total;
+}
+
+prevBtn.addEventListener("click", () => {
+    if (page > 1) {
+        page--;
+        loadTickets();
+    }
+});
+
+nextBtn.addEventListener("click", () => {
+    if ((page * limit) < total) {
+        page++;
+        loadTickets();
+    }
+});
+
+loadTickets();
