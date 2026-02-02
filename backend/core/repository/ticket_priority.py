@@ -1,11 +1,13 @@
+import os
 import mysql.connector
+import logging
 from mysql.connector.pooling import MySQLConnectionPool
-
+logger = logging.getLogger(__name__)
 try:
     db_pool = MySQLConnectionPool(
         pool_name="ticket_pool", pool_size=5, pool_reset_session=True,
-        host="127.0.0.1", user="root", password="Vineel@2001",
-        database="ticket_priority_system", port=3306, autocommit=False
+        host=os.getenv("DB_HOST"), user=os.getenv("DB_USER"), password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME"), port=int(os.getenv("DB_PORT", 3306)), autocommit=False
     )
 except Exception as e:
     raise Exception(f"Pool creation failed: {e}")
@@ -49,6 +51,18 @@ class TicketRepository:
     
     def create_user(self, username, password_hash):
         self._execute("INSERT INTO users (username, password_hash) VALUES (%s, %s)", (username, password_hash))
-    
+
+
     def get_user(self, username):
-        return self._execute("SELECT id, username, password_hash FROM users WHERE username = %s", (username,), fetch='one')
+        """Get user by username"""
+        try:
+            conn = db_pool.get_connection()
+            cursor = conn.cursor(dictionary=True)
+            cursor.execute("SELECT id, username, password_hash FROM users WHERE username = %s", (username,))
+            user = cursor.fetchone()
+            cursor.close()
+            conn.close()
+            return user
+        except Exception as e:
+            logger.error(f"Error getting user: {str(e)}")
+            return None

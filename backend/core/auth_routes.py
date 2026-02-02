@@ -4,37 +4,57 @@ import bcrypt
 import logging
 from .repository.ticket_priority import TicketRepository
 
+logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
-auth_bp = Blueprint("auth", __name__)
+
+auth_bp = Blueprint("auth", __name__,url_prefix="/auth")
 repo = TicketRepository()
 
 @auth_bp.route("/register", methods=["POST"])
 def register():
     try:
-        data = request.json
-        username = data.get("username", "").lower()
-        password_hash = bcrypt.hashpw(data["password"].encode(), bcrypt.gensalt()).decode()
+        data = request.get_json(force=True)
+        username = data.get("username", "").strip().lower()
+        password = data.get("password", "")
+        if not username or not password:
+            return jsonify({"error": "Username and password are required"}),400
+        password_hash= bcrypt.hashpw(password.encode(),bcrypt.gensalt()).decode()
         repo.create_user(username, password_hash)
-        logger.info(f"User {username} created successfully")
+        logger.debug("Create user: %s",username)
         return jsonify({"msg": "user created"}), 201
     except Exception as e:
-        logger.error(f"Register error: {str(e)}")
+        logger.exception(f"Register error")
         return jsonify({"error": str(e)}), 500
 
 @auth_bp.route("/login", methods=["POST"])
 def login():
     try:
-        data = request.json
-        username = data.get("username", "").lower()
-        user = repo.get_user(username)
+        data = request.get_json(force=True)
+        username = data.get("username", "").strip().lower()
+        password = data.get("password","")
+
+        if not username or not password:
+            return jsonify({"error": "Username and password are required"}),400
         
-        if not user or not bcrypt.checkpw(data["password"].encode(), user["password_hash"].encode()):
-            logger.warning(f"Login failed for user: {username}")
-            return jsonify({"msg": "invalid username or password"}), 401
+        user=repo.get_user(username)        
+        logger.debug("Fetched user for login: %s",user)
+        if not isinstance(user, dict):
+            logger.error("Expected dict from repo.get_user, got: %s", type(user))
+            return jsonify({"error": "Invalid credentials"}), 401
         
-        token = create_access_token(identity=str(user["id"]))
-        logger.info(f"Login successful for user: {username}")
-        return jsonify(access_identity=token), 200
+        stored_hash = user.get("password_hash") if isinstance(user, dict) else None
+        if not stored_hash:
+            logger.debug("Password hash missing in DB record: %s", username)
+            return jsonify({"error": "Invalid credentials"}), 401
+
+        check = bcrypt.checkpw(password.encode(), stored_hash.encode())
+        if not check:
+            logger.debug("Password check for '%s': %s", username, check)
+            return jsonify({"error": "Invalid credentials"}), 401
+
+        token = create_access_token(identity=str(user.get("id")))
+        return jsonify({"access_identity": token}), 200
+
     except Exception as e:
-        logger.error(f"Login error: {str(e)}")
+        logger.exception("Login error")
         return jsonify({"error": str(e)}), 500

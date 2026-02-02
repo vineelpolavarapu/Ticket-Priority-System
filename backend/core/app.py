@@ -2,6 +2,8 @@ import os
 from flask import Flask, send_from_directory
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
+from dotenv import load_dotenv
+load_dotenv()
 
 # Get the absolute path to frontend directory
 def create_app():             
@@ -10,7 +12,7 @@ def create_app():
 
     app = Flask(__name__, static_folder=frontend_path, static_url_path='')
 
-    app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "super-secret-key-dev-only")
+    app.config["JWT_SECRET_KEY"] = os.environ["JWT_SECRET_KEY"]
 
     CORS(app)
     jwt = JWTManager(app)
@@ -31,4 +33,4 @@ def create_app():
 app = create_app()
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=False,host="0.0.0.0",port=5000)

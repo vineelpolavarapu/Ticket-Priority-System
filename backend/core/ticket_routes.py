@@ -34,6 +34,10 @@ def get_tickets():
         logger.error(f"GET tickets error: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
+@ticket_bp.route("/health", methods=["GET"])
+def health_check():
+    return {"status": "ok"},200
+
 @ticket_bp.route("/tickets", methods=["POST"])
 @jwt_required()
 def create_ticket():
