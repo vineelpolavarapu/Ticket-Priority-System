@@ -8,12 +8,13 @@
 </head>
 <body>
 
-    <!-- Centered Title -->
     <h2 class="page-title">Create Ticket</h2>
+    
+    <!--<button id="clearCacheBtn" style="background: #f44336; color: white; padding: 5px 0px; border: none; cursor: pointer; margin-bottom: 0px;">Clear Cache & Refresh</button>-->
 
-    <form id="ticketform">
+    <form id="ticketform" method="POST">
         <label for="issue_type">Issue Type</label>
-        <select id="issue_type">
+        <select id="issue_type" name="issue_type" required>
             <option value="" disabled selected hidden>Select Issue Type</option>
             <option value="critical">Critical</option>
             <option value="major">Major</option>
@@ -21,10 +22,10 @@
         </select>
 
         <label for="impact">Impact</label>
-        <input type="number" id="impact" placeholder="How many users are effected" required/>
+        <input type="number" id="impact" name="impact" min="1" max="999" required placeholder="How many users are effected (1-999)" />
 
         <label for="customer_type">Customer Type</label>
-        <select id="customer_type">
+        <select id="customer_type" name="customer_type" required>
             <option value="" disabled selected hidden>Select Customer Type</option>
             <option value="enterprise">Enterprise</option>
             <option value="paid">Paid</option>
@@ -37,7 +38,7 @@
     <div id="ticketsContainer"></div>
     <div class="pagination">
         <button id="prevBtn" disabled>Previous</button>
-        <span id="prevInfo">Page 1</span>
+        <span id="pageInfo">Page 1</span>
         <button id="nextBtn">Next</button> 
     </div>
     
