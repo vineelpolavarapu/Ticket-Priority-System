@@ -180,5 +180,5 @@ PriorityEngine computes a weighted sum of the factors list. The output score is 
 ## Author
 Vineel Kumar Polavarapu
 
-If you have any queriesy you can find me on:
+If you have any questions or suggestions, feel free to reach out!:
 - Linkedin : www.linkedin.com/in/vineelkumarpolavarapu
