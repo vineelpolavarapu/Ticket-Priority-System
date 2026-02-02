@@ -1,3 +1,4 @@
+const API_BASE_URL=window.location.origin;
 const form = document.getElementById("ticketform");
 const issue_type = document.getElementById("issue_type");
 const impact = document.getElementById("impact");
@@ -84,7 +85,7 @@ form.addEventListener("submit", async (e) => {
   };
 
   try {
-    const response = await authFetch("http://127.0.0.1:5000/tickets", {
+    const response = await authFetch(`${API_BASE_URL}/tickets`, {
       method: "POST",
       body: JSON.stringify(data)
     });
@@ -121,17 +122,18 @@ nextBtn.onclick = () => {
 //API
 async function login() {
   try {
-    console.log("[LOGIN] Attempting login with vineel/password");
+    console.log("[LOGIN] Attempting demo login");
     
-    const res = await fetch("http://127.0.0.1:5000/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username: "vineel",
-        password: "password"
-      })
+    const DEMO_USER ={
+      username: "vineel",
+      password: "password"
+    };
+    const res = await fetch(`${API_BASE_URL}/auth/login`,{
+      method:"POST",
+      headers:{"Content-Type": "application/json"},
+      body: JSON.stringify(DEMO_USER)
     });
-
+    
     console.log("[LOGIN] Response status:", res.status);
     
     const data = await res.json();
@@ -151,9 +153,7 @@ async function login() {
 }
 
 async function loadTickets() {
-  const response = await fetch(
-    `http://127.0.0.1:5000/tickets?page=${page}&limit=${limit}`
-  );
+  const response = await fetch(`${API_BASE_URL}/tickets?page=${page}&limit=${limit}`);
 
   if (!response.ok) return;
 
