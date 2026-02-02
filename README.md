@@ -78,13 +78,13 @@ Support teams often queue requests in arrival order. Critical or high-value cust
    pip install -r backend/core/requirement.txt
 
 ## Configuration
-Create a `.env` file in `backend/core/` with:
-JWT_SECRET_KEY=replace-with-secret
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=your_mysql_password
-DB_NAME=ticket_priority_system
-DB_PORT=3306
+- Create a `.env` file in `backend/core/` with:
+- JWT_SECRET_KEY=replace-with-secret
+- DB_HOST=localhost
+- DB_USER=root
+- DB_PASSWORD=your_mysql_password
+- DB_NAME=ticket_priority_system
+- DB_PORT=3306
 *(Adjust values as needed.)*
 
 
