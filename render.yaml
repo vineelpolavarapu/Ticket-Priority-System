@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: ticket-priority-system
+    env: python
+    buildCommand: "pip install -r backend/core/requirements.txt"
+    startCommand: "gunicorn --bind 0.0.0.0:$PORT --workers 2 --timeout 60 backend.core.app:app"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11
+      - key: FLASK_APP
+        value: backend.core.app:app
+      - key: DB_TYPE
+        value: sqlite
+      - key: SQLITE_DB_PATH
+        value: /tmp/tickets.db
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: PYTHONUNBUFFERED
+        value: "1"
+
+  # Optional: PostgreSQL database (uncomment to use)
+  # - type: pserv
+  #   name: ticket-db
+  #   ipAllowList: []
+  #   plan: starter
+  #   postgresVersion: "15"
