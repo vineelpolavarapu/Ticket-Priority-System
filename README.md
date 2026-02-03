@@ -16,9 +16,9 @@ Support teams often queue requests in arrival order. Critical or high-value cust
 - **Frontend**: static HTML/CSS/JS served by Flask for quick manual testing.
 - **API**: Flask providing JWT-authentication, ticket creation, and listing endpoints.
 - **Priority Engine**: isolated module that computes priority score and label.
-- **Persistence**: MySQL with a repository layer and connection pooling.
+- **Persistence**: MySQL with a repository layer and connection pooling. For quick demos the project also supports SQLite (auto-initializes on first run) so i deploy a demo without a managed DB.
 - **Deployment**: Dockerfile + docker-compose for containerized runs.
-- **Host**: Use railway.app for easy access.
+- **Host**: Use render for easy access.
 
 ## Features
 - User registration and login (JWT)
@@ -37,7 +37,7 @@ Support teams often queue requests in arrival order. Critical or high-value cust
 - Gunicorn for production deployment
 - Docker
 - simple HTML/CSS/JS for frontend
-- railway.app for hosting
+- render for hosting
 
 ## System Design
 - Stateless API with JWT authentication
@@ -75,7 +75,7 @@ Support teams often queue requests in arrival order. Critical or high-value cust
    python -m venv .venv
    .venv\Scripts\activate  (Windows) or source .venv/bin/activate (macOS/Linux)
 3. Install dependencies:
-   pip install -r backend/core/requirement.txt
+  pip install -r backend/core/requirements.txt
 
 ## Configuration
 - Create a `.env` file in `backend/core/` with:
@@ -87,14 +87,23 @@ Support teams often queue requests in arrival order. Critical or high-value cust
 - DB_PORT=3306
 *(Adjust values as needed.)*
 
+Notes:
+- For a simple demo deployment you can keep the default `DB_TYPE` as `sqlite` (the app will create the SQLite file and demo user automatically). No extra SQL setup is required for the demo.
+- Always set a strong `JWT_SECRET_KEY`  in your deployment environment so do not commit secrets into the repository.
+
 
 ## Usage
-1. Initialize the database:
-   mysql -u root -p < backend/core/repository/SETUP.sql
+1. For a demo with SQLite (no external DB required) just run the app and it will auto-initialize the database and demo user.
+
+- If you prefer MySQL for production or managed DB testing, initialize it with:
+
+- *mysql -u root -p < backend/core/repository/SETUP.sql*
+
+
 2. Run the app from project root:
-   python -m backend.core.app
+  - python -m backend.core.app
 3. Open the UI:
-   http://localhost:5000
+  - http://localhost:5000
 
 ## API Endpoints
 - POST /auth/register
