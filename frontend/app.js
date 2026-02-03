@@ -78,10 +78,34 @@ async function authFetch(url, options = {}, retry = true) {
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
+  const issueTypeVal = issue_type.value && issue_type.value.toString().trim();
+  const customerTypeVal = customer_type.value && customer_type.value.toString().trim();
+  const impactParsed = parseInt(impact.value, 10);
+
+  if (!issueTypeVal) {
+    showError('Please select an issue type');
+    return;
+  }
+
+  if (!customerTypeVal) {
+    showError('Please select a customer type');
+    return;
+  }
+
+  if (!Number.isFinite(impactParsed) || isNaN(impactParsed)) {
+    showError('Impact must be a valid number');
+    return;
+  }
+
+  if (impactParsed < 1 || impactParsed > 999) {
+    showError('Impact must be between 1 and 999');
+    return;
+  }
+
   const data = {
-    issue_type: issue_type.value,
-    impact: parseInt(impact.value),
-    customer_type: customer_type.value
+    issue_type: issueTypeVal,
+    impact: impactParsed,
+    customer_type: customerTypeVal
   };
 
   try {
@@ -97,7 +121,7 @@ form.addEventListener("submit", async (e) => {
       return;
     }
 
-    resultText.innerText = `Priority: ${result.level}\nScore: ${result.score}`;
+    resultText.innerText = `Priority: ${result.priority_level}\nScore: ${result.priority_score}`;
     resultModal.style.display = "flex";
     form.reset();
     loadTickets();
@@ -143,7 +167,7 @@ async function login() {
       throw new Error(data.msg || "Login failed");
     }
 
-    localStorage.setItem("token", data.access_identity);
+    localStorage.setItem("token", data.access_token);
     console.log("[LOGIN] Token saved to localStorage");
   } catch (err) {
     console.error("[LOGIN] Error:", err.message);
