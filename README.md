@@ -164,12 +164,10 @@ PriorityEngine computes a weighted sum of the factors list. The output score is 
 
 ## Deployment
 - Dockerfile and docker-compose are provided for local container testing.
-- **For Railway**:
-  - Push to GitHub, connect the repo to Railway, configure env vars and managed MySQL.
-  - Railway can build from the Dockerfile or use a buildpack.
-- Example:
-  cd docker
-  docker-compose up --build
+- **For Render**:
+  - Push to GitHub, connect the repo to Render, configure docker as a runtime language.
+  - Render can deploy this as a demo.
+
 
 ## Future Enhancements
 - Role-based access and admin UI
